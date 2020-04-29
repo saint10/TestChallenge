@@ -46,9 +46,11 @@ class ViewController: UIViewController , UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "idCellBank") as? BankCell {
-            cell.lblName.text = listBanks?[indexPath.row].bankName ?? ""
-            cell.lblDescription.text = listBanks?[indexPath.row].description ?? ""
-            cell.lblAge.text   = "\(listBanks?[indexPath.row].age ?? 0)"
+            cell.lblName.text           = listBanks?[indexPath.row].bankName ?? ""
+            cell.lblDescription.text    = listBanks?[indexPath.row].description ?? ""
+            cell.lblAge.text            = "\(listBanks?[indexPath.row].age ?? 0)"
+            cell.url                    = listBanks?[indexPath.row].url ?? ""
+            cell.delegate               = self
             
             return cell
         }
@@ -65,3 +67,13 @@ class ViewController: UIViewController , UITableViewDataSource{
     }
 }
 
+extension ViewController: BankCellDelegate{
+    func openUrl(url: String) {
+        if let urlTryOpen = URL(string: url) {
+            if UIApplication.shared.canOpenURL(urlTryOpen) {
+                UIApplication.shared.open(urlTryOpen)
+            }
+        }
+    }
+    
+}
